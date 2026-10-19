@@ -1,0 +1,561 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Larochka's FA Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow ledger column, black ink on white paper; hearts are the only colour */
+:root{
+  --bg:#ffffff; --fg:#0c0c0c; --muted:#6e6e6e; --line:#dcdcdc; --soft:#f4f4f4; --inv:#ffffff;
+  --display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0c0c0c;--fg:#f4f4f4;--muted:#9a9a9a;--line:#2e2e2e;--soft:#181818;--inv:#0c0c0c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c0c0c;--fg:#f4f4f4;--muted:#9a9a9a;--line:#2e2e2e;--soft:#181818;--inv:#0c0c0c;color-scheme:dark}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,7vw,54px);line-height:1.08;margin:0;text-wrap:balance}
+h1 em{font-style:italic;font-weight:600}
+.lead{color:var(--muted);margin:0;max-width:56ch}
+.tabs{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--line)}
+.tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 16px;font:500 15px var(--body);color:var(--muted);cursor:pointer}
+.tab:hover{color:var(--fg)}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--fg)}
+.tab:focus-visible,.btn:focus-visible,.opt:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.levelcard{display:flex;flex-direction:column;gap:14px}
+.levelcard p{margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.chapters{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border-top:1px solid var(--line)}
+.chapters div{padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;display:flex;gap:12px}
+.chapters span{font-family:var(--mono);color:var(--muted);min-width:22px}
+.btn{appearance:none;cursor:pointer;font:600 16px var(--body);padding:14px 26px;border:1.5px solid var(--fg);background:var(--fg);color:var(--inv);border-radius:2px}
+.btn:hover{opacity:.88}
+.btn.ghost{background:transparent;color:var(--fg)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.linkbtn{appearance:none;background:none;border:0;padding:0;font:500 14px var(--body);color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.linkbtn:hover{color:var(--fg)}
+.ledger{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}
+.ledger i{display:block;height:8px;border:1px solid var(--line)}
+.ledger i.ok{background:var(--fg);border-color:var(--fg)}
+.ledger i.no{background:repeating-linear-gradient(135deg,var(--muted) 0 2px,transparent 2px 5px);border-color:var(--muted)}
+.ledger i.now{border-color:var(--fg);border-width:2px}
+.qhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.qtext{font-size:clamp(19px,3.6vw,23px);line-height:1.45;font-weight:500;margin:0;text-wrap:pretty}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{appearance:none;text-align:left;display:flex;gap:14px;align-items:flex-start;width:100%;padding:14px 16px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:400 16px/1.45 var(--body);cursor:pointer;border-radius:2px;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--fg)}
+.opt .k{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:2px;min-width:14px}
+.opt .t{min-width:0;overflow-wrap:anywhere}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--fg);color:var(--inv);border-color:var(--fg)}
+.opt.right .k{color:var(--inv)}
+.opt.wrong .t{text-decoration:line-through;text-decoration-thickness:1.5px}
+.opt.wrong{border-color:var(--fg);border-style:dashed}
+.opt.dim{opacity:.45}
+.feedback{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--fg);padding-top:18px}
+.cheer{font-family:var(--display);font-style:italic;font-weight:600;font-size:clamp(24px,4.6vw,32px);line-height:1.2;margin:0}
+.ex{margin:0;color:var(--muted);font-size:15px;max-width:62ch}
+.ex b{color:var(--fg);font-weight:600}
+.score{font-family:var(--mono);font-size:clamp(56px,14vw,96px);line-height:1;letter-spacing:-.02em}
+.review{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.rv{padding:16px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px;font-size:15px}
+.rv .rq{font-weight:500}
+.rv .ry{color:var(--muted);text-decoration:line-through}
+.rv .rc b{font-weight:600}
+.rv .rx{color:var(--muted);font-size:14px}
+.hint{font-family:var(--mono);font-size:12px;color:var(--muted)}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+.welcome{animation:rise .7s ease-out both}
+@keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.welcome{animation:none}.opt{transition:none}}
+@media (max-width:480px){.tab{padding:12px 10px;font-size:14px}.ledger{gap:2px}}
+</style>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<main class="wrap" id="app"></main>
+
+<script>
+/* ---------- helpers ---------- */
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmt=n=>{n=Math.round(n);return (n<0?"−€":"€")+Math.abs(n).toLocaleString("en-US")};
+const pct=n=>(Math.round(n*100)/100).toLocaleString("en-US")+"%";
+const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const MDAYS=[31,28,31,30,31,30,31,31,30,31,30,31];
+function num(c,cands,f=fmt){c=Math.round(c);const o=[c];for(const x0 of cands){const x=Math.round(x0);if(!o.includes(x))o.push(x);if(o.length===4)break}let k=1;while(o.length<4){const x=Math.round(c*(1+(k%2?1:-1)*0.12*Math.ceil(k/2)))+(c===0?k*100:0);if(!o.includes(x))o.push(x);k++}return o.map(f)}
+function uniq(o,fill){const out=[];for(const x of o)if(!out.includes(x))out.push(x);for(const x of fill){if(out.length>=4)break;if(!out.includes(x))out.push(x)}return out.slice(0,4)}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const CH={1:"Conceptual framework",2:"Recording transactions",3:"Accruals & adjustments",4:"Presenting statements",5:"Receivables",6:"Inventory",7:"Property, plant & equipment"};
+
+/* ---------- static question bank: [chapter, level, question, [correct, wrong, wrong, wrong], explanation] ---------- */
+const S=[
+/* Ch 1 — easy */
+[1,"e","Which is the accounting equation?",["Assets = Liabilities + Equity","Assets = Liabilities − Equity","Assets + Liabilities = Equity","Equity = Assets + Liabilities"],"Everything the company has (assets) is financed either by outsiders (liabilities) or by the owners (equity)."],
+[1,"e","Financial accounting reports to…",["Both external and internal users","Only internal managers","Only the tax office","Only the CEO"],"Financial accounting serves external users (investors, banks, the state) and internal users. Management accounting is internal only."],
+[1,"e","Since which year must all EU listed companies apply IFRS?",["2005","1973","2015","2027"],"IAS/IFRS exist since 1973, but they became compulsory for all EU listed companies in 2005."],
+[1,"e","The balance sheet shows the company's position…",["At one specific point in time","Over a period of time","Only for the last month","Only in cash terms"],"The balance sheet is a snapshot on one date, e.g. 'as of 31 December'. The other statements cover a period."],
+[1,"e","Which statement shows revenues and expenses for a period?",["Income statement","Balance sheet","Trial balance","Notes"],"The income statement (statement of profit or loss) shows revenue − expenses = profit or loss for the period."],
+[1,"e","Which of these is one of the five elements of financial statements?",["Expenses","Liquidity","Profitability","Timeliness"],"The five elements: assets, liabilities, equity, income and expenses."],
+[1,"e","What is the boundary between current and non-current items?",["12 months","6 months","24 months","5 years"],"Current = expected to be realised or settled within 12 months."],
+[1,"e","Which is a FUNDAMENTAL qualitative characteristic?",["Relevance","Comparability","Timeliness","Understandability"],"Fundamental: relevance and faithful representation. The others are enhancing characteristics."],
+[1,"e","Shareholders of a corporation are…",["Not personally liable for the company's debts","Personally liable for all debts","Liable only for unpaid taxes","Liable for employees' private debts"],"In a corporation the owners are not personally liable. A sole proprietor is."],
+[1,"e","The cash flow statement groups cash flows into…",["Operating, investing and financing","Current and non-current","Revenue, expense and profit","Assets, liabilities and equity"],"Three activities: operating (daily business), investing (long-term assets), financing (loans, shares, dividends)."],
+/* Ch 1 — hard */
+[1,"h","Which is an ENHANCING qualitative characteristic?",["Verifiability","Relevance","Faithful representation","Going concern"],"Enhancing: comparability, verifiability, timeliness, understandability. Going concern is an assumption."],
+[1,"h","The going concern assumption means that…",["The entity will keep operating in the foreseeable future","Assets are shown at liquidation values","The company must make a profit every year","Only cash transactions are recorded"],"We assume the business continues. If not, a different basis of measurement would be needed."],
+[1,"h","Taking out a long-term bank loan appears in the cash flow statement under…",["Financing activities","Investing activities","Operating activities","It is not shown"],"Loans and share issues are financing. Buying or selling long-term assets is investing."],
+[1,"h","Buying a new machine for cash appears in the cash flow statement under…",["Investing activities","Financing activities","Operating activities","It is not shown"],"Purchases and sales of non-current assets are investing activities."],
+[1,"h","Dividends paid to shareholders…",["Reduce retained earnings but are not an expense","Are an operating expense","Increase net income","Reduce revenue"],"Dividends are a distribution of profit to owners. They never appear in the income statement."],
+[1,"h","On an IFRS balance sheet, assets are ordered by… and liabilities by…",["Liquidity; maturity","Maturity; liquidity","Size; size","Age; interest rate"],"Assets: how quickly they turn into cash. Liabilities: when they are due."],
+[1,"h","Management accounting differs from financial accounting because it is…",["Voluntary and for internal users","Compulsory under IFRS","Only for external users","Published once a year"],"Management accounting has no statutory rules and serves internal decision makers, often daily or weekly."],
+[1,"h","The objective of financial reporting is useful information for…",["Existing and potential investors, lenders and other creditors","Only the managers","Only the tax authority","Only the employees"],"This is the objective at the top of the conceptual framework."],
+[1,"h","IFRS 18 replaces which standard?",["IAS 1","IFRS 15","IAS 16","IFRS 9"],"IFRS 18 replaces IAS 1 Presentation of Financial Statements for periods from 1 January 2027."],
+/* Ch 1 — pro */
+[1,"p","Which classification is fully correct?",["Fundamental: relevance, faithful representation. Enhancing: comparability, verifiability, timeliness, understandability","Fundamental: comparability, relevance. Enhancing: timeliness, verifiability, faithful representation","Fundamental: going concern, accrual. Enhancing: relevance, comparability","Fundamental: understandability, relevance. Enhancing: cost, timeliness"],"Two fundamental, four enhancing. Cost is a constraint; accrual and going concern are assumptions."],
+[1,"p","Which item does NOT belong in the income statement?",["Dividends paid","Salary expense","Interest expense","Income tax expense"],"Dividends go to the statement of changes in equity, reducing retained earnings."],
+[1,"p","Which is NOT one of the IFRS 18 income statement categories?",["Marketing","Operating","Investing","Discontinued operations"],"The five categories: operating, investing, financing, income taxes, discontinued operations."],
+[1,"p","Which statement carries net income over to the balance sheet?",["Statement of changes in equity","Statement of cash flows","Notes","Trial balance"],"Income statement → net income → statement of changes in equity → ending retained earnings → balance sheet."],
+[1,"p","The cost constraint in the conceptual framework means…",["The benefits of reporting information should justify its cost","Companies must report at the lowest possible cost","All assets are measured at historical cost","Expenses must be minimised"],"Information is only worth reporting if its usefulness outweighs the cost of producing it."],
+[1,"p","Cash fell from €30,000 to €18,000, while revenue was €135,000 and expenses were €72,000. Net income is…",["€63,000","−€12,000","€135,000","€51,000"],"Net income = 135,000 − 72,000 = €63,000. The change in cash is a distractor: net income ≠ change in cash."],
+/* Ch 2 — easy */
+[2,"e","Where is a transaction recorded FIRST?",["Journal","Ledger","Trial balance","Balance sheet"],"The journal is the 'book of original entry'. Then: ledger → trial balance → statements."],
+[2,"e","'Debit' means…",["The left side of an account","The right side of an account","Always an increase","Always a decrease"],"Debit = left, credit = right. Whether it increases or decreases depends on the account type."],
+[2,"e","Which accounts INCREASE with a debit?",["Assets and expenses","Liabilities and revenue","Equity and revenue","Liabilities and equity"],"Assets, expenses (and dividends) increase on the debit side."],
+[2,"e","Which accounts INCREASE with a credit?",["Liabilities, equity and revenue","Assets and expenses","Assets and dividends","Expenses and dividends"],"Liabilities, equity and revenue increase on the credit side."],
+[2,"e","Accounts receivable is…",["An asset — customers owe us money","A liability — we owe money","Revenue","An expense"],"RECEIVable = we will RECEIVE cash."],
+[2,"e","Accounts payable is…",["A liability — we owe suppliers","An asset","Revenue","Equity"],"PAYable = we must PAY."],
+[2,"e","Office supplies still on the shelf are…",["An asset","An expense","A liability","Revenue"],"Supplies on hand are an asset. They only become an expense when they are used up."],
+[2,"e","In double-entry bookkeeping, total debits must…",["Equal total credits","Be larger than credits","Be smaller than credits","Equal total assets"],"Every transaction has at least one debit and one credit of equal amounts."],
+[2,"e","The ledger is…",["The collection of all accounts (T-accounts)","The book of original entry","A financial statement","A list of customers only"],"The ledger, or 'book of accounts', holds every account. The journal is the book of original entry."],
+[2,"e","Owners invest €10,000 cash. The journal entry is…",["Dr Cash / Cr Share capital","Dr Share capital / Cr Cash","Dr Cash / Cr Revenue","Dr Cash / Cr Bank loan"],"Cash (asset) ↑ = debit. Share capital (equity) ↑ = credit."],
+/* Ch 2 — hard */
+[2,"h","Bought equipment on account. The entry is…",["Dr Equipment / Cr Accounts payable","Dr Equipment / Cr Cash","Dr Accounts payable / Cr Equipment","Dr Equipment / Cr Accounts receivable"],"On account = pay later. Equipment ↑ (debit), Accounts payable ↑ (credit)."],
+[2,"h","Performed services on account. The entry is…",["Dr Accounts receivable / Cr Service revenue","Dr Cash / Cr Service revenue","Dr Service revenue / Cr Accounts receivable","Dr Accounts payable / Cr Service revenue"],"Customer owes us: receivable ↑ (debit). Revenue is earned now (credit)."],
+[2,"h","Collected cash from a customer on account. The entry is…",["Dr Cash / Cr Accounts receivable","Dr Cash / Cr Service revenue","Dr Accounts receivable / Cr Cash","Dr Cash / Cr Accounts payable"],"Cash ↑, receivable ↓. Revenue was already recorded when the service was performed."],
+[2,"h","Paid a supplier for goods bought earlier on account. The entry is…",["Dr Accounts payable / Cr Cash","Dr Cash / Cr Accounts payable","Dr Inventory / Cr Cash","Dr Expense / Cr Cash"],"Debt ↓ (debit payable), cash ↓ (credit cash)."],
+[2,"h","Paid salaries in cash. The entry is…",["Dr Salary expense / Cr Cash","Dr Cash / Cr Salary expense","Dr Salary expense / Cr Salaries payable","Dr Retained earnings / Cr Cash"],"Expense ↑ (debit), cash ↓ (credit)."],
+[2,"h","The trial balance…",["Lists all ledger balances to check that debits equal credits","Is another name for the balance sheet","Is the book of original entry","Lists only asset accounts"],"Trial balance ≠ balance sheet. It includes revenues and expenses too."],
+[2,"h","Collecting cash from a customer on account will…",["Change the mix of assets, but not total assets","Increase total assets","Increase revenue","Decrease liabilities"],"Cash ↑ and receivables ↓ by the same amount."],
+[2,"h","Buying land for cash will…",["Increase one asset and decrease another","Increase assets and liabilities","Increase assets and equity","Decrease assets and equity"],"Land ↑, cash ↓. Totals stay the same."],
+[2,"h","Temporary (nominal) accounts are…",["Revenues and expenses","Assets and liabilities","Share capital","Cash and inventory"],"Income statement accounts are closed at period end. Balance sheet accounts are permanent."],
+[2,"h","Borrowing money from a bank causes…",["Assets ↑ and liabilities ↑","Assets ↑ and equity ↑","Assets ↓ and liabilities ↓","No change"],"Cash ↑ and bank loan ↑."],
+/* Ch 2 — pro */
+[2,"p","A €2,000 payment to a supplier was recorded as Dr Cash / Cr Accounts payable. What is the result?",["Cash and accounts payable are both overstated by €4,000, but the trial balance still balances","The trial balance will not balance","Only cash is wrong, by €2,000","Nothing is wrong, the sides are just swapped"],"Correct entry: Dr AP / Cr Cash. The reversed entry adds 2,000 instead of subtracting 2,000, so each account is off by 4,000. Debits still equal credits."],
+[2,"p","Which error would the trial balance NOT reveal?",["Debiting rent expense instead of salary expense","Posting only the debit side of an entry","Adding a debit balance as 1,000 instead of 100","Recording a debit of 500 and a credit of 50"],"Using the wrong account on the correct side keeps debits = credits, so the trial balance cannot catch it."],
+[2,"p","Which transaction does NOT change total assets?",["Collecting cash from a customer on account","Borrowing from a bank","Paying a supplier","Owners investing cash"],"Cash ↑ and receivables ↓: only the composition of assets changes."],
+[2,"p","Which transaction decreases BOTH assets and liabilities?",["Paying a supplier on account","Buying supplies on account","Collecting a receivable","Paying salaries"],"Cash ↓ and accounts payable ↓. Paying salaries reduces assets and equity (via expense)."],
+[2,"p","Paying salaries in cash affects the accounting equation how?",["Assets ↓ and equity ↓","Assets ↓ and liabilities ↓","One asset ↑ and another ↓","Liabilities ↑ and equity ↓"],"Cash ↓ (asset). The expense reduces profit and therefore equity."],
+[2,"p","In the Austrian chart of accounts, class 4 contains…",["Revenues","Fixed assets","Equity","Personnel expenses"],"Class 0 = fixed assets, class 4 = revenues, class 9 = equity."],
+/* Ch 3 — easy */
+[3,"e","Under accrual accounting, revenue is recognised when…",["It is earned — the service is performed or goods delivered","Cash is received","The invoice is paid","The year ends"],"Accrual: income when earned, expenses when incurred, regardless of cash."],
+[3,"e","Prepaid rent is…",["An asset","An expense","A liability","Revenue"],"Paid in advance = a right to use the space in future = asset."],
+[3,"e","Unearned revenue is…",["A liability","Revenue","An asset","Equity"],"The customer paid in advance; we still owe the service. That obligation is a liability."],
+[3,"e","The matching concept means…",["Expenses are recorded in the same period as the revenues they helped earn","Debits match credits","Cash in matches cash out","Assets match liabilities"],"Example: the cost of a sold pen is expensed in the period the pen is sold."],
+[3,"e","Depreciation allocates the cost of…",["Long-term assets over their useful life","Inventory over its selling period","Receivables over the payment term","Salaries over the year"],"PPE is used for many years, so its cost is spread as depreciation expense."],
+[3,"e","An expense incurred in September but paid in October appears on…",["September's income statement","October's income statement","Both months","Neither month"],"Accrual: the expense belongs to the period when it was incurred."],
+[3,"e","Accumulated depreciation is…",["A contra-asset account","A liability","An expense","Revenue"],"It sits on the balance sheet under the asset and reduces it to its carrying amount."],
+[3,"e","IFRS requires a complete set of financial statements at least…",["Annually","Monthly","Quarterly","Every two years"],"At least once a year. Large companies also report interim periods."],
+[3,"e","Closing entries set which accounts to zero?",["Revenue and expense accounts","Asset accounts","Liability accounts","Share capital"],"Temporary accounts are closed to retained earnings. Permanent accounts are carried forward."],
+[3,"e","Cash-basis accounting records…",["Only cash receipts and cash payments","Revenue when earned","Expenses when incurred","Depreciation"],"Cash basis ignores when economic activity happens. Only very small operations use it."],
+/* Ch 3 — hard */
+[3,"h","The adjusting entry for one month of used-up prepaid rent is…",["Dr Rent expense / Cr Prepaid rent","Dr Prepaid rent / Cr Rent expense","Dr Rent expense / Cr Cash","Dr Prepaid rent / Cr Cash"],"The asset is used up: expense ↑ (debit), prepaid rent ↓ (credit). No cash moves."],
+[3,"h","Part of the unearned revenue has now been earned. The adjusting entry is…",["Dr Unearned revenue / Cr Service revenue","Dr Service revenue / Cr Unearned revenue","Dr Cash / Cr Service revenue","Dr Unearned revenue / Cr Cash"],"Liability ↓ (debit), revenue ↑ (credit)."],
+[3,"h","Salaries earned by staff but not yet paid at year end are recorded as…",["Dr Salary expense / Cr Salaries payable","Dr Salaries payable / Cr Salary expense","Dr Salary expense / Cr Cash","Dr Prepaid salaries / Cr Cash"],"Accrued expense: expense ↑ and a liability ↑. Payment comes next period."],
+[3,"h","Interest revenue earned but not yet received is recorded as…",["Dr Interest receivable / Cr Interest revenue","Dr Interest revenue / Cr Interest receivable","Dr Cash / Cr Interest revenue","Dr Interest receivable / Cr Cash"],"Accrued revenue: a receivable (asset) ↑ and revenue ↑."],
+[3,"h","Monthly depreciation under the indirect method is recorded as…",["Dr Depreciation expense / Cr Accumulated depreciation","Dr Depreciation expense / Cr Equipment","Dr Accumulated depreciation / Cr Depreciation expense","Dr Equipment / Cr Accumulated depreciation"],"Indirect method uses the contra-asset. The direct method would credit equipment itself."],
+[3,"h","The term 'deferral' refers to…",["Recognising an expense or revenue AFTER the cash is paid or received","Recognising revenue BEFORE cash is received","Recording a liability after the expense is incurred","Ignoring cash completely"],"Deferral: cash first, the expense or revenue later (prepaid, unearned)."],
+[3,"h","Accruals are…",["Revenues earned or expenses incurred BEFORE cash is received or paid","Cash paid in advance for future services","Cash received in advance from customers","Depreciation of equipment"],"Accrual: the event first, the cash later (receivables, payables)."],
+[3,"h","The two purposes of adjusting entries are to…",["Measure income and update the balance sheet","Record cash and close the books","Pay taxes and dividends","Prepare the journal and the ledger"],"Adjustments put revenues and expenses in the right period and correct balance sheet values."],
+[3,"h","Under IFRS 15, revenue is recognised when…",["The entity satisfies a performance obligation (control passes to the customer)","The contract is signed","Cash is received","The invoice is sent"],"Step 5 of the five-step model."],
+[3,"h","The closing entry for revenue accounts is…",["Dr Revenue / Cr Retained earnings","Dr Retained earnings / Cr Revenue","Dr Revenue / Cr Cash","Dr Cash / Cr Revenue"],"Revenue has a credit balance; debiting it to zero moves the amount into retained earnings."],
+[3,"h","If a company forgets to record an accrued expense at year end…",["Expenses are understated, net income overstated and liabilities understated","Expenses are overstated and net income understated","Only cash is wrong","Assets are overstated"],"The missing entry was Dr Expense / Cr Payable."],
+/* Ch 3 — pro */
+[3,"p","In August, Hello Inc. made sales on account of €8,100 and collected €8,900 cash. Operating expenses were €4,800, of which €4,100 were paid. Accrual-basis net income for August is…",["€3,300","€4,800","€4,100","€800"],"Accrual: 8,100 − 4,800 = €3,300. Cash basis would be 8,900 − 4,100 = €4,800."],
+[3,"p","Salaries are €1,500 per day, Monday to Friday, paid every Friday. December 31 is a Tuesday. The accrued salary at year end is…",["€3,000","€1,500","€7,500","€4,500"],"Monday and Tuesday are unpaid: 2 × 1,500 = €3,000 → Dr Salary expense / Cr Salaries payable."],
+[3,"p","On 1 October, €12,000 rent for one year was collected in advance and credited to Unearned rent revenue. The 31 December adjustment is…",["Dr Unearned rent revenue €3,000 / Cr Rent revenue €3,000","Dr Rent revenue €3,000 / Cr Unearned rent revenue €3,000","Dr Unearned rent revenue €9,000 / Cr Rent revenue €9,000","No adjustment is needed"],"Three months (Oct–Dec) earned: 12,000 × 3/12 = €3,000."],
+[3,"p","At the end of December a company paid €800 for next year's parking rent and recorded it as Prepaid rent. The 31 December adjusting entry is…",["No adjusting entry is needed","Dr Rent expense €800 / Cr Prepaid rent €800","Dr Prepaid rent €800 / Cr Rent expense €800","Dr Rent expense €800 / Cr Cash €800"],"Nothing has been used yet; the full €800 stays as an asset for next year."],
+[3,"p","Under IAS 10, a dividend declared after year end is recorded when declared as…",["Dr Retained earnings / Cr Liabilities to shareholders","Dr Dividend expense / Cr Cash","Dr Cash / Cr Retained earnings","Dr Retained earnings / Cr Revenue"],"Only permanent accounts are involved, so no closing entry is needed."],
+[3,"p","Rural Insurance collected €2,700 on 1 April for a one-year policy (credited Unearned revenue). Nine months later no adjustments have been made. The 31 December entry is…",["Dr Unearned revenue €2,025 / Cr Insurance revenue €2,025","Dr Insurance revenue €2,025 / Cr Unearned revenue €2,025","Dr Unearned revenue €675 / Cr Insurance revenue €675","Dr Insurance revenue €675 / Cr Unearned revenue €675"],"2,700 × 9/12 = €2,025 has been earned."],
+[3,"p","Which statement about adjusting entries is TRUE?",["They never involve the Cash account","They always involve the Cash account","They only affect the balance sheet","Only small companies make them"],"Adjustments shift amounts between balance sheet and income statement accounts; cash moved earlier or will move later."],
+/* Ch 4 — easy */
+[4,"e","A complete set of financial statements includes…",["Financial position, profit or loss, changes in equity, cash flows and notes","Only the balance sheet and income statement","The statements plus the CEO letter","Only the notes"],"Five parts, including the notes."],
+[4,"e","IFRS 18 applies to annual periods beginning on or after…",["1 January 2027","1 January 2005","1 January 2018","1 January 2030"],"Earlier application is permitted."],
+[4,"e","Offsetting assets against liabilities (or revenue against expenses) is…",["Not allowed","Always allowed","Required","Allowed for small items only"],"'No offsetting' is a general presentation principle."],
+[4,"e","Comparative information means showing…",["Figures for the previous period as well","Figures of competitors","Five years of history","Budget figures"],"At least two periods: current and previous."],
+[4,"e","The auditor's report provides…",["An independent opinion on whether the statements give a true and fair view","Management's sales forecast","The company's tax return","Details of each employee's salary"],"Mandatory for listed companies."],
+[4,"e","An unqualified audit opinion means…",["The statements fairly present the financial position","The statements are wrong","The auditor refused to sign","There is one disagreement"],"It is the highest level of assurance an auditor gives."],
+[4,"e","Consistency of presentation means…",["Presentation and classification stay the same from one period to the next","All companies use identical numbers","Every item is shown separately","Statements are published monthly"],"It keeps periods comparable."],
+[4,"e","Which label is correct for a balance sheet?",["'As of 31 December 20XX'","'For the year ended 31 December 20XX'","'During December 20XX'","'From January to December'"],"Balance sheet = a date. Income statement, SOCE and cash flows = 'for the year ended…'."],
+[4,"e","Under materiality and aggregation, immaterial items are…",["Aggregated with items of a similar nature","Always shown separately","Deleted","Moved to the auditor's report"],"Each material class is shown separately; small items are combined."],
+[4,"e","Financial statements must be published at least…",["Once a year","Once a month","Every quarter","Every two years"],"Listed companies also publish interim reports."],
+/* Ch 4 — hard */
+[4,"h","An adverse audit opinion means…",["The statements do NOT fairly present the financial position","The statements are fair except for one item","The statements are fully fair","The auditor had too little time"],"Adverse is the opposite of unqualified."],
+[4,"h","A qualified audit opinion means…",["The statements are fair except for a disagreement on one item","The statements are completely misleading","The highest level of assurance","The company is not a going concern"],"'Except for…' wording."],
+[4,"h","Which TWO new subtotals does IFRS 18 require in the income statement?",["Operating profit and profit before financing and income taxes","Gross profit and EBITDA","Net sales and net profit","Comprehensive income and EBIT"],"These defined subtotals improve comparability between companies."],
+[4,"h","Interest expense on bank borrowings goes into which IFRS 18 category?",["Financing","Operating","Investing","Income taxes"],"Interest on borrowings and other financing activities = financing category."],
+[4,"h","Dividend income from an investment unrelated to the main business goes into…",["The investing category","The operating category","The financing category","Discontinued operations"],"Returns from investments not related to the main business = investing."],
+[4,"h","The 'function of expense' (cost of sales) method shows…",["Cost of sales, distribution costs and administrative expenses","Raw materials, wages and depreciation","Only cash expenses","Expenses in alphabetical order"],"The 'nature of expense' method shows raw materials used, wages, depreciation, etc."],
+[4,"h","Showing PPE on the balance sheet net of accumulated depreciation is…",["Allowed — netting is not offsetting","Forbidden offsetting","Only allowed under US GAAP","Only allowed in the notes"],"The carrying amount (cost − accumulated depreciation) is reported."],
+[4,"h","Cash €15, Inventory €10, Receivables €22, PPE €50, Intangibles €40. Current assets are…",["€47","€25","€37","€97"],"Cash + inventory + receivables = 15 + 10 + 22 = €47."],
+[4,"h","Which company is clearly NOT a going concern?",["One whose management intends to liquidate it","One with a single loss-making year","One that changed its auditor","One that pays no dividends"],"An intention or necessity to liquidate breaks the going concern assumption."],
+[4,"h","IFRS for SMEs may NOT be used by…",["Entities with public accountability","Family-owned companies","Companies with fewer than 50 employees","Unlisted companies"],"That is the only restriction set by the IASB."],
+/* Ch 4 — pro */
+[4,"p","When the classification of items changes, the entity…",["Must reclassify comparative amounts, unless impractical","Must never reclassify comparatives","Has a free choice","Must restate the last five years"],"Comparatives are reclassified so periods stay comparable."],
+[4,"p","An entity's equity may DECREASE during a period because…",["A prior-period error overstated last year's profit","New shares were issued","Total comprehensive income exceeded net profit","Other comprehensive income was positive"],"Correcting an overstatement of earlier profits reduces equity."],
+[4,"p","The notes can be used for all of these EXCEPT…",["Explaining why an accounting standard was not followed","Explaining the accounting policies used","Breaking down line items","Disclosing items not shown on the face"],"Standards cannot be selectively applied, and notes cannot fix inappropriate policies."],
+[4,"p","Which item is NOT required on the face of the statement of financial position?",["Accumulated depreciation","Trade payables","Cash and cash equivalents","Intangible assets"],"PPE is shown at carrying amount; accumulated depreciation goes to the notes."],
+[4,"p","'Fair presentation' requires that…",["Standards are not applied selectively","Every company reports the same numbers","The entity keeps operating","Similar items are always aggregated"],"Fair presentation = faithful representation and full compliance with IFRS."],
+[4,"p","The IFRS 18 income statement order is…",["Operating profit → Profit before financing and income taxes → Profit before tax → Profit for the year","Profit before tax → Operating profit → Profit for the year","Gross profit → Profit for the year → Operating profit","Profit before financing → Operating profit → Profit before tax"],"Operating comes first; financing and taxes follow."],
+[4,"p","Which standard covers half-yearly interim reporting?",["IAS 34","IAS 1","IFRS 18","IAS 10"],"IAS 34 Interim Financial Reporting. Quarterly statements follow less strict rules."],
+[4,"p","Which is a simplification in IFRS for SMEs compared with full IFRS?",["Goodwill is amortised","LIFO is allowed","No balance sheet is required","Revenue is recorded on a cash basis"],"Also: borrowing and development costs are expensed, and far fewer disclosures are needed."],
+[4,"e","Which statement is labelled 'for the financial year ended 31 December'?",["Income statement","Balance sheet","Statement of financial position","None of them"],"Income statement, SOCE and cash flows cover a period. Only the balance sheet is 'as of' a date."],
+[4,"e","The notes to the financial statements usually begin with…",["A summary of significant accounting policies","The auditor's opinion","The CEO letter","The cash flow statement"],"Then supporting details for line items, then other disclosures."],
+[4,"e","Which is part of the annual report but NOT of the financial statements?",["The letter from the CEO","The notes","The statement of cash flows","The statement of changes in equity"],"Management commentary, governance and sustainability reports sit outside the financial statements."],
+[4,"e","The accrual basis applies to all statements EXCEPT…",["The statement of cash flows","The income statement","The balance sheet","The statement of changes in equity"],"The cash flow statement reports actual cash movements."],
+[4,"h","In the ACCOUNT format of the statement of financial position…",["Assets are on the left; equity and liabilities on the right","Assets are listed above equity and liabilities","Only assets are shown","Liabilities are on the left"],"The report format lists assets first, then equity and liabilities below."],
+[4,"h","Which is a NON-current asset on the statement of financial position?",["Intangible assets","Inventories","Trade receivables","Cash and cash equivalents"],"Intangibles, PPE, financial assets, investments and biological assets are non-current."],
+[4,"h","Which is a CURRENT liability?",["Trade and other payables","Long-term borrowings","Deferred tax liabilities","Long-term provisions"],"Trade payables and short-term provisions are due within 12 months."],
+[4,"h","Management-defined performance measures (IFRS 18) are…",["Subtotals not defined by IFRS that management uses in public communications","Figures the auditor invents","Budget targets for next year","Taxes calculated by management"],"IFRS 18 requires them to be disclosed in the notes."],
+[4,"h","The statement of changes in equity…",["Reconciles total equity from the beginning to the end of the period","Shows only cash dividends","Replaces the income statement","Lists all liabilities"],"Changes come from owners (new shares, dividends, buybacks) and from total comprehensive income."],
+[4,"p","Which three types of accounting change are named in the presentation requirements?",["New standards, changes in estimates, changes in policies","New auditors, new owners, new products","Changes in cash, inventory and debt","Mergers, sales and liquidations"],"These affect how equity and comparatives are presented."],
+[4,"p","Which line items appear under the NATURE of expense method?",["Raw materials used, wages and depreciation","Cost of sales, distribution and administrative expenses","Only cost of sales","Gross profit and EBIT only"],"The function (cost of sales) method shows cost of sales, distribution and administrative expenses, and gives gross profit."],
+[4,"p","Under IFRS 18, cost of sales and administrative expenses belong to…",["The operating category","The investing category","The financing category","The income taxes category"],"Operating covers the main business activities."],
+[4,"p","Besides new subtotals and MPMs, IFRS 18 adds new principles for…",["Aggregation and disaggregation of items","Depreciation methods","Inventory costing","Revenue recognition"],"Its third main improvement."],
+[4,"p","When IFRS 18 replaced IAS 1, some paragraphs were moved to…",["IAS 8 and IFRS 7","IAS 16 and IAS 36","IFRS 15 and IFRS 9","IAS 2 and IAS 23"],"The IASB kept some IAS 1 text in IFRS 18 and moved the rest."],
+[5,"e","Selling on account is mainly intended to…",["Increase sales and profit","Avoid paying taxes","Reduce inventory costs","Replace bank loans"],"The cost of selling on account: some customers may never pay."],
+[5,"h","Notes receivable are classified as…",["Current or non-current, depending on the maturity date","Always current","Always non-current","Liabilities"],"Due within 12 months → current."],
+[5,"h","The principal of a note is…",["The amount borrowed, excluding interest","Principal plus interest","The interest only","The annual interest rate"],"Maturity value = principal + interest."],
+[5,"p","Company A signs a €2,400, 8%, 90-day note on 2 November for consulting services and prepares monthly reports. How much cash does it pay at maturity on 31 January?",["€2,448","€2,400","€2,592","€2,432"],"Interest €16 per month × 3 = €48. 2,400 + 48 = €2,448."],
+[5,"p","Under the allowance method, which entry has NO effect on net income?",["Writing off a specific uncollectible account","Recording bad debt expense","Accruing interest on a note","Recording a credit sale"],"The write-off uses the allowance; the expense was already recorded."],
+[5,"p","The debtor's entry at maturity of a note on which interest was partly accrued is…",["Dr Interest expense, Dr Interest payable, Dr Notes payable / Cr Cash","Dr Cash / Cr Notes payable","Dr Notes receivable / Cr Cash","Dr Interest income / Cr Cash"],"The accrued interest payable is settled, the last month's interest is expensed, and the note is paid."],
+/* Ch 5 — easy */
+[5,"e","Accounts receivable are classified as…",["Current assets","Non-current assets","Liabilities","Equity"],"One of the most liquid assets after cash."],
+[5,"e","The allowance for uncollectible accounts is…",["A contra-asset account","A liability","An expense","Revenue"],"It has a credit balance and reduces receivables on the balance sheet."],
+[5,"e","Bad debt (uncollectible account) expense is…",["An operating expense","A liability","A reduction of revenue","Equity"],"It is the cost of selling on credit."],
+[5,"e","Net realisable value of receivables equals…",["Accounts receivable − allowance","Accounts receivable + allowance","Allowance − bad debt expense","Sales − receivables"],"This net amount is what appears in current assets."],
+[5,"e","A promissory note is…",["A written promise to pay a sum at maturity, usually with interest","An interest-free trade credit","A bank statement","A sales invoice"],"More formal than an account receivable."],
+[5,"e","The maturity value of a note is…",["Principal + interest","Principal only","Interest only","Principal − interest"],"The total the debtor pays at the maturity date."],
+[5,"e","The party who owes money on a promissory note is the…",["Debtor (maker)","Creditor","Auditor","Payee"],"The creditor is the lender or seller who receives the money."],
+[5,"e","Which method does IFRS 9 require for impairment of receivables?",["The allowance (expected credit loss) method","The direct write-off method","The cash method","No method"],"Measure the loss allowance as lifetime expected credit losses."],
+[5,"e","Under the direct write-off method, writing off an account is recorded as…",["Dr Bad debt expense / Cr Accounts receivable","Dr Allowance / Cr Accounts receivable","Dr Accounts receivable / Cr Bad debt expense","Dr Cash / Cr Accounts receivable"],"No allowance exists, so the expense is recorded directly."],
+[5,"e","Interest income from notes receivable is…",["Reported separately from revenue from ordinary activities","Added to sales revenue","Ignored until the end of the note","A liability"],"Interest income and interest expense are shown separately."],
+/* Ch 5 — hard */
+[5,"h","Under the allowance method, writing off a specific uncollectible account is recorded as…",["Dr Allowance for uncollectible accounts / Cr Accounts receivable","Dr Bad debt expense / Cr Accounts receivable","Dr Accounts receivable / Cr Allowance","Dr Bad debt expense / Cr Allowance"],"The expense was already estimated earlier."],
+[5,"h","Under the allowance method, a write-off affects net receivables and profit how?",["No effect on either","Both decrease","Net receivables decrease, profit unchanged","Profit decreases, receivables unchanged"],"Receivables and allowance fall by the same amount."],
+[5,"h","Recording uncollectible-account expense under the allowance method…",["Decreases net income and decreases assets","Increases expenses and increases equity","Decreases assets, no effect on net income","Decreases equity and increases liabilities"],"Dr Bad debt expense / Cr Allowance: the expense lowers profit, the contra-asset lowers net receivables."],
+[5,"h","The year-end adjusting entry for estimated bad debts is…",["Dr Bad debt expense / Cr Allowance for uncollectible accounts","Dr Allowance / Cr Bad debt expense","Dr Bad debt expense / Cr Accounts receivable","Dr Accounts receivable / Cr Allowance"],"It brings the allowance to its required ending balance."],
+[5,"h","Which relationship is correct?",["Beginning allowance − write-offs + bad debt expense = ending allowance","Beginning allowance + write-offs − expense = ending allowance","Ending allowance = receivables − write-offs","Expense = beginning allowance + write-offs"],"Use this to solve for any missing figure."],
+[5,"h","The aging-of-receivables method estimates uncollectibles by…",["Applying higher percentages to older receivables","Applying one rate to sales","Writing off all accounts over 30 days","Ignoring overdue accounts"],"The older the debt, the less likely it is to be collected."],
+[5,"h","Accruing interest on a note receivable at year end is recorded as…",["Dr Interest receivable / Cr Interest income","Dr Interest income / Cr Interest receivable","Dr Notes receivable / Cr Interest income","Dr Cash / Cr Interest income"],"Interest earned but not yet received."],
+[5,"h","A customer signs a note to replace an open account receivable. The entry is…",["Dr Notes receivable / Cr Accounts receivable","Dr Accounts receivable / Cr Notes receivable","Dr Notes receivable / Cr Sales revenue","Dr Cash / Cr Notes receivable"],"One receivable is swapped for another; revenue was recorded earlier."],
+[5,"h","'Receivables, less allowance of €2,100: €17,000.' Then a €1,000 account is written off. Net receivables are now…",["€17,000","€16,000","€18,000","€14,900"],"Gross receivables and the allowance both fall by €1,000; the net figure does not change."],
+[5,"h","The debtor accrues interest on a note payable at month end. The entry is…",["Dr Interest expense / Cr Interest payable","Dr Interest payable / Cr Interest expense","Dr Interest expense / Cr Notes payable","Dr Interest receivable / Cr Interest income"],"For the borrower, interest is an expense and an obligation."],
+/* Ch 5 — pro */
+[5,"p","Receivables €90,000. The allowance has a €2,500 credit balance before adjustment. Expected uncollectible: 3% of receivables. The bad debt expense is…",["€200","€2,700","€2,500","€5,200"],"Required allowance = 3% × 90,000 = 2,700. Expense = 2,700 − 2,500 = €200. Net receivables = €87,300."],
+[5,"p","A company sells a note receivable to a bank for less than its face value. The entry is…",["Dr Cash, Dr Financing expense / Cr Notes receivable","Dr Cash / Cr Notes receivable, Cr Interest income","Dr Notes receivable / Cr Cash","Dr Cash / Cr Sales revenue"],"The shortfall is a financing expense."],
+[5,"p","(€ millions) Opening receivables 3,435, allowance 344. Revenue on account 32,435, collections 31,877, write-offs 300. Ending allowance 369. Bad debt expense is…",["€325 million","€25 million","€369 million","€300 million"],"344 − 300 + X = 369 → X = 325."],
+[5,"p","A €1,000, 9%, 6-month note dated 31 August is collected on 28 February. Interest was accrued on 31 December. The interest income recognised on 28 February is…",["€15","€30","€45","€90"],"Jan–Feb: 1,000 × 9% × 2/12 = €15. The €30 for Sep–Dec was already recorded."],
+[5,"p","A €32,000, 3-month, 4% note is received on 30 November. Accrued interest on 31 December is about…",["€107","€320","€1,280","€213"],"32,000 × 4% × 1/12 = €106.67 ≈ €107."],
+/* Ch 6 — easy */
+[6,"e","Inventory is…",["A current asset","A non-current asset","An expense","A liability"],"Goods held for sale or further processing."],
+[6,"e","When does the cost of inventory become an expense?",["When the goods are delivered to the customer","When purchased from the supplier","When the supplier is paid","When cash is collected"],"Matching: COGS is expensed when the sale is made."],
+[6,"e","Gross profit is…",["Net sales − cost of goods sold","COGS − operating expenses","Net sales ÷ COGS","Net sales − all expenses"],"Gross margin % = gross profit ÷ sales × 100."],
+[6,"e","Which inventory costing method is NOT allowed under IFRS?",["LIFO","FIFO","Weighted average","Specific identification"],"LIFO is accepted under US GAAP and Austrian GAAP, but not IFRS."],
+[6,"e","Under a perpetual system, each sale needs…",["Two entries: revenue and cost of goods sold","Only a revenue entry","Only a COGS entry","No entry until year end"],"Dr Cash/AR, Cr Sales — and Dr COGS, Cr Inventory."],
+[6,"e","Inventory is reported on the balance sheet at…",["The lower of cost and net realisable value","Selling price","Replacement cost","Whatever the manager decides"],"IAS 2."],
+[6,"e","Specific identification is used for…",["Unique items such as cars, antiques and real estate","Identical small goods","All goods under IFRS","Raw materials only"],"Each sold item is linked to its own cost."],
+[6,"e","FIFO assigns which costs to cost of goods sold?",["The oldest costs","The newest costs","The average cost","The highest cost"],"First in, first out. Ending inventory keeps the most recent costs."],
+[6,"e","Freight-in paid on purchased inventory is…",["Included in the cost of inventory","An administrative expense","Revenue","Ignored"],"All costs needed to make inventory ready for sale are capitalised."],
+[6,"e","Selling and distribution costs are…",["Excluded from inventory cost and expensed","Added to inventory","Added to equipment","Recorded as a liability"],"Admin overheads, storage (unless needed) and abnormal waste are also excluded."],
+/* Ch 6 — hard */
+[6,"h","In a period of RISING prices…",["Gross profit under FIFO is higher than under LIFO","Net income under LIFO is higher than under FIFO","LIFO inventory is higher than FIFO inventory","COGS under LIFO is lower than under FIFO"],"FIFO expenses the older, cheaper costs → lower COGS → higher gross profit."],
+[6,"h","Goods bought on account are returned to the supplier. The entry is…",["Dr Accounts payable / Cr Inventory","Dr Inventory / Cr Accounts payable","Dr Cash / Cr Inventory","Dr Accounts payable / Cr Sales returns"],"The debt falls and the inventory leaves."],
+[6,"h","Paying €85,000 to a supplier with a 2% settlement discount is recorded as…",["Dr Accounts payable 85,000 / Cr Inventory 1,700, Cr Cash 83,300","Dr Accounts payable 83,300 / Cr Cash 83,300","Dr Inventory 1,700 / Cr Cash 1,700","Dr Accounts payable 85,000 / Cr Cash 85,000"],"Discounts received reduce the cost of inventory."],
+[6,"h","Inventory shrinkage under a perpetual system is recorded as…",["Dr Cost of goods sold / Cr Inventory","Dr Inventory / Cr COGS","Dr Shrinkage revenue / Cr Inventory","Dr Inventory / Cr Cash"],"Any interim shrinkage expense account is closed to COGS."],
+[6,"h","Writing inventory down to NRV is recorded as…",["Dr Cost of goods sold / Cr Inventory","Dr Inventory / Cr COGS","Dr Loss / Cr Cash","No entry, only a note"],"Applies when NRV is below cost."],
+[6,"h","Net realisable value means…",["Estimated selling price minus costs of completion and selling costs","Original purchase price","Current replacement cost","Selling price plus profit margin"],"Compare it with cost and report the lower."],
+[6,"h","If NRV rises after a write-down…",["The write-down is reversed, but only up to original cost","Inventory is raised to the new NRV","Nothing can be done","The gain goes directly to equity"],"Inventory can never exceed its original cost."],
+[6,"h","Weighted average cost produces gross profit…",["Between FIFO and LIFO","Higher than both FIFO and LIFO","Lower than both","Always equal to FIFO"],"It averages old and new costs."],
+[6,"h","Abnormal waste of materials during production is…",["Expensed, not added to inventory","Added to inventory cost","Added to equipment","Recorded as revenue"],"IAS 2 excludes abnormal waste."],
+[6,"h","Goods costing €300 are sold for €500; half is paid now, half next month. Under a perpetual system the entries are…",["Dr Cash 250, Dr AR 250 / Cr Sales 500 — and Dr COGS 300 / Cr Inventory 300","Dr Cash 500 / Cr Sales 500","Dr AR 500 / Cr Inventory 500","Dr Cash 250 / Cr Sales 250 — and Dr COGS 150 / Cr Inventory 150"],"The full sale is revenue now; the cost of the goods moves to COGS."],
+/* Ch 6 — pro */
+[6,"p","Oceanview began January with €3,200 inventory, bought €6,400 on account, sold goods for €7,400 with COGS €5,400. Ending inventory is…",["€4,200","€5,200","€2,000","€0"],"3,200 + 6,400 − 5,400 = €4,200. Gross profit = 7,400 − 5,400 = €2,000."],
+[6,"p","Item XJ15 sells for €1,000 with a COGS percentage of 80%. Gross profit on 20 units is…",["€4,000","€16,000","€20,000","It cannot be calculated"],"Sales 20,000 × 20% = €4,000."],
+[6,"p","4 units bought at €5 each are sold for €60 in total. The gross margin is…",["66.67%","33.33%","50%","150%"],"Gross profit 60 − 20 = 40; 40 ÷ 60 = 66.67%."],
+[6,"p","Net sales €623,000, beginning inventory €64,000, net purchases €460,000, ending inventory €45,000. Gross profit is…",["€144,000","€130,000","€163,000","€134,000"],"COGS = 64,000 + 460,000 − 45,000 = 479,000. 623,000 − 479,000 = €144,000."],
+[6,"p","Why does IFRS's 'balance sheet primacy' fit FIFO?",["FIFO keeps ending inventory close to current market prices","FIFO gives the lowest taxes","FIFO matches the newest costs with sales","FIFO ignores purchase costs"],"FIFO leaves the most recent costs on the balance sheet."],
+[6,"p","In a period of FALLING prices, FIFO gives…",["Higher COGS and lower gross profit","Lower COGS and higher gross profit","Higher ending inventory","The same result as LIFO"],"The older units (expensed first) were more expensive."],
+/* Ch 7 — easy */
+[7,"e","Land is…",["Not depreciated","Depreciated straight-line","Depreciated with DDB","Expensed immediately"],"Land has no limited useful life. Buildings on it are depreciated."],
+[7,"e","Which is an example of PPE?",["A delivery truck","Inventory for resale","Accounts receivable","A patent"],"PPE is tangible and used for more than one period. A patent is intangible."],
+[7,"e","Depreciation is…",["The systematic allocation of an asset's cost over its useful life","A way of valuing the asset at market price","Saving cash to replace the asset","A liability"],"It is not a valuation process."],
+[7,"e","Carrying amount (book value) equals…",["Cost − accumulated depreciation","Cost + accumulated depreciation","Market value","Residual value"],"This is what the balance sheet shows under the cost model."],
+[7,"e","Which cost is capitalised as part of equipment?",["Transportation and installation","Ordinary repairs","Annual insurance after use begins","Staff training"],"All costs to make the asset ready for its intended use are capitalised."],
+[7,"e","Ordinary repairs that keep a machine working are…",["Expensed","Capitalised","Added to land","Recorded as revenue"],"They do not extend capacity or useful life."],
+[7,"e","A capital expenditure…",["Is added to the cost of the asset","Is expensed immediately","Increases share capital","Is a liability"],"It increases capacity or extends useful life."],
+[7,"e","Residual value is…",["The estimated value at the end of useful life","The purchase price","Annual depreciation","Accumulated depreciation"],"Also called scrap or salvage value."],
+[7,"e","Which method gives the HIGHEST depreciation in the early years?",["Double-declining balance","Straight-line","Units of production (always)","No depreciation"],"DDB is an accelerated method."],
+[7,"e","Selling PPE for MORE than its carrying amount gives…",["A gain","A loss","Revenue from sales","No effect"],"Cash received > book value → gain."],
+/* Ch 7 — hard */
+[7,"h","Which item is NOT deducted when calculating annual DDB depreciation?",["Residual value","Accumulated depreciation","Previous depreciation","Nothing — all are deducted"],"DDB uses the opening carrying amount × rate; residual value only limits the final year."],
+[7,"h","A company forgot to record depreciation. The effect is…",["Net income overstated and assets overstated","Net income understated and assets overstated","Net income overstated and assets understated","Net income understated and assets understated"],"Missing expense → profit too high; missing accumulated depreciation → assets too high."],
+[7,"h","Which method fits best when benefits depend on output produced?",["Units of production","Straight-line","Double-declining balance","Sum of the years' digits"],"IAS 16: the method should reflect the pattern of consumption."],
+[7,"h","A fully depreciated machine with no residual value is scrapped. The entry is…",["Dr Accumulated depreciation / Cr Machinery","Dr Machinery / Cr Accumulated depreciation","Dr Loss / Cr Machinery","No entry"],"Remove the cost and the accumulated depreciation; no gain or loss."],
+[7,"h","The revaluation model is NOT accepted under…",["US GAAP and Austrian UGB","IFRS","IAS 16","Any standard"],"IFRS allows the cost model or the revaluation model."],
+[7,"h","Under IAS 36, recoverable amount is…",["The higher of fair value less costs to sell and value in use","The lower of cost and NRV","Cost − accumulated depreciation","Market value only"],"Compare it with the carrying amount."],
+[7,"h","An asset must be impaired when…",["Its carrying amount is higher than its recoverable amount","Its recoverable amount is higher than its carrying amount","Its market value rises","It is fully depreciated"],"Write it down to the recoverable amount."],
+[7,"h","A major overhaul extends a machine's useful life by three years. It is…",["Capitalised","Expensed","Ignored","Recorded as revenue"],"It extends useful life → capital expenditure."],
+[7,"h","Paving a permanent parking lot on newly bought land is…",["A separate asset (land improvement) that is depreciated","Part of the land cost and not depreciated","An expense","Part of inventory"],"Land improvements decay and are depreciated; land is not."],
+[7,"h","Borrowing costs on a qualifying construction project are capitalised…",["Until construction is completed","Until the asset is first used","For the asset's whole life","Never"],"IAS 23 — from when expenditure starts until construction is complete."],
+[7,"h","Which statement about depreciation is FALSE?",["Depreciation should not be recorded when the asset's market value rises","Depreciation allocates cost over useful life","It matches the asset's cost with the revenues it helps generate","Obsolescence affects the depreciation period"],"Depreciation is not a valuation, so market value rises do not stop it."],
+[7,"h","Training staff to operate a new machine is…",["Expensed","Capitalised","Added to inventory","A liability"],"It does not get the machine itself ready for use."],
+/* Ch 7 — pro */
+[7,"p","A machine cost $33,000, residual $6,000, 5-year straight-line life. After two years the total life is revised to 10 years and residual to $0. Depreciation for each of the remaining 8 years is…",["$2,775","$3,300","$5,400","$2,220"],"Annual = 27,000 ÷ 5 = 5,400; book value after 2 years = 22,200. 22,200 ÷ 8 = $2,775."],
+[7,"p","A van (cost €20,000, accumulated depreciation €14,960) is sold for €5,000. The result is…",["Loss of €40","Gain of €40","Loss of €5,040","Gain of €5,000"],"Book value 5,040; cash 5,000 → loss €40."],
+[7,"p","An aircraft cost €53m, residual €5m, life 5 years / 6m miles. Third-year mileage 1.275m. Units-of-production depreciation for year 3 is…",["€10.2m","€9.6m","€11.3m","€8.0m"],"(53 − 5) ÷ 6 = €8 per mile; 8 × 1.275m = €10.2m."],
+[7,"p","Same aircraft (€53m, residual €5m, 5 years). Book value after year 1, straight-line, is…",["€43.4m","€42.4m","€48.0m","€38.4m"],"Annual = 48 ÷ 5 = 9.6m; 53 − 9.6 = €43.4m."],
+[7,"p","A capital expenditure is best described as a cost that…",["Is added to an asset because it increases capacity or extends useful life","Is expensed immediately","Is credited to owners' equity","Records new share capital"],"Repairs that only maintain working order are expensed."]
+];
+
+/* ---------- generated questions: new numbers every time ---------- */
+const G=[
+/* easy */
+{ch:1,l:"e",f(){const A=R(15,90)*10000,L=R(3,A/10000-3)*10000,E=A-L,v=R(0,2);
+ if(v===0)return{q:`Total assets are ${fmt(A)} and total liabilities are ${fmt(L)}. What is equity?`,o:num(E,[A+L,L,A]),ex:`Equity = Assets − Liabilities = ${fmt(A)} − ${fmt(L)} = ${fmt(E)}.`};
+ if(v===1)return{q:`Total assets are ${fmt(A)} and equity is ${fmt(E)}. What are the liabilities?`,o:num(L,[A+E,E,A]),ex:`Liabilities = Assets − Equity = ${fmt(A)} − ${fmt(E)} = ${fmt(L)}.`};
+ return{q:`Liabilities are ${fmt(L)} and equity is ${fmt(E)}. What are total assets?`,o:num(A,[Math.abs(E-L),L,E]),ex:`Assets = Liabilities + Equity = ${fmt(L)} + ${fmt(E)} = ${fmt(A)}.`}}},
+{ch:1,l:"e",f(){const rev=R(40,160)*1000;let exp=R(30,170)*1000;if(exp===rev)exp+=5000;const D=R(2,15)*1000,ni=rev-exp;
+ const lab=n=>n>=0?`Net income ${fmt(n)}`:`Net loss ${fmt(-n)}`;
+ return{q:`Revenue was ${fmt(rev)}, expenses were ${fmt(exp)} and dividends paid were ${fmt(D)}. What is the result for the period?`,o:uniq([lab(ni),lab(ni-D),lab(-ni),lab(rev+exp)],[lab(rev),lab(exp)]),ex:`Revenue − expenses = ${fmt(rev)} − ${fmt(exp)} = ${lab(ni).toLowerCase()}. Dividends are not an expense, so they do not affect net income.`}}},
+{ch:6,l:"e",f(){if(R(0,1)){const n=R(10,200),p=R(20,90),c=R(8,p-5),s=n*p,cg=n*c;return{q:`${n} units are sold at ${fmt(p)} each. Each unit cost ${fmt(c)}. What is the gross profit?`,o:num(s-cg,[s,cg,p-c]),ex:`Sales ${fmt(s)} − COGS ${fmt(cg)} = gross profit ${fmt(s-cg)}.`}}
+ const m=pick([20,25,30,40,50,60]),s=R(10,90)*1000,gp=s*m/100,cg=s-gp;
+ return{q:`Net sales are ${fmt(s)} and cost of goods sold is ${fmt(cg)}. What is the gross margin?`,o:uniq([pct(m),pct(100-m),pct(gp/cg*100),pct(m/2)],[pct(m+10)]),ex:`Gross profit = ${fmt(s)} − ${fmt(cg)} = ${fmt(gp)}. ${fmt(gp)} ÷ ${fmt(s)} × 100 = ${pct(m)}.`}}},
+{ch:7,l:"e",f(){const a=R(2,15)*1000,n=pick([4,5,8,10]),r=R(0,5)*1000,c=a*n+r;
+ return{q:`A machine costs ${fmt(c)}, has a residual value of ${fmt(r)} and a useful life of ${n} years. Annual straight-line depreciation is…`,o:num(a,[c/n,(c+r)/n,a*2]),ex:`(${fmt(c)} − ${fmt(r)}) ÷ ${n} = ${fmt(a)} per year.`}}},
+{ch:3,l:"e",f(){const N=pick([3,6,12]),m=R(2,20)*50,t=N*m,s=R(0,11);
+ return{q:`On 1 ${MON[s]} a company paid ${fmt(t)} for ${N} months of rent in advance (recorded as Prepaid rent). The monthly adjusting entry credits Prepaid rent by…`,o:num(m,[t,m*2,t-m]),ex:`${fmt(t)} ÷ ${N} months = ${fmt(m)} per month: Dr Rent expense / Cr Prepaid rent.`}}},
+{ch:5,l:"e",f(){const ar=R(10,90)*1000,al=R(2,9)*100;
+ return{q:`Accounts receivable are ${fmt(ar)} and the allowance for uncollectible accounts is ${fmt(al)}. What is shown as net receivables?`,o:num(ar-al,[ar+al,ar,al]),ex:`Net realisable value = ${fmt(ar)} − ${fmt(al)} = ${fmt(ar-al)}.`}}},
+/* hard */
+{ch:1,l:"h",f(){const b=R(10,200)*1000,rev=R(50,200)*1000,exp=R(30,190)*1000,d=R(1,20)*1000,ni=rev-exp,e=b+ni-d;
+ return{q:`Beginning retained earnings ${fmt(b)}, revenue ${fmt(rev)}, expenses ${fmt(exp)}, dividends ${fmt(d)}. Ending retained earnings are…`,o:num(e,[b+ni,b+ni+d,b+rev-d]),ex:`${fmt(b)} + (${fmt(rev)} − ${fmt(exp)}) − ${fmt(d)} = ${fmt(e)}.`}}},
+{ch:6,l:"h",f(){const b=R(10,60)*1000,p=R(40,150)*1000,e=R(10,60)*1000,c=b+p-e;
+ return{q:`Beginning inventory ${fmt(b)}, net purchases ${fmt(p)}, ending inventory (physical count) ${fmt(e)}. Cost of goods sold is…`,o:num(c,[b+p+e,p-e,b+p]),ex:`COGS = beginning + purchases − ending = ${fmt(b)} + ${fmt(p)} − ${fmt(e)} = ${fmt(c)}.`}}},
+{ch:7,l:"h",f(){const pu=pick([0.1,0.2,0.25,0.4,0.5]),T=R(2,10)*100000,res=R(1,8)*5000,cost=pu*T+res,u=R(2,Math.min(20,T/10000-1))*10000,d=pu*u;
+ return{q:`A machine costs ${fmt(cost)}, residual value ${fmt(res)}, and is expected to produce ${T.toLocaleString("en-US")} units. This year it produced ${u.toLocaleString("en-US")} units. Units-of-production depreciation is…`,o:num(d,[cost/T*u,(cost-res)/5,d*2]),ex:`(${fmt(cost)} − ${fmt(res)}) ÷ ${T.toLocaleString("en-US")} = €${pu} per unit × ${u.toLocaleString("en-US")} = ${fmt(d)}.`}}},
+{ch:3,l:"h",f(){const s=pick([3,4,5,7,8,9,10]),k=12-s,m=R(2,20)*100,T=12*m,e=k*m;
+ return{q:`On 1 ${MON[s]} a company received ${fmt(T)} for services to be performed evenly over 12 months (credited Unearned revenue). No adjustments have been made. The 31 December adjusting entry is…`,o:[`Dr Unearned revenue ${fmt(e)} / Cr Service revenue ${fmt(e)}`,`Dr Service revenue ${fmt(e)} / Cr Unearned revenue ${fmt(e)}`,`Dr Unearned revenue ${fmt(T-e)} / Cr Service revenue ${fmt(T-e)}`,`Dr Cash ${fmt(T)} / Cr Service revenue ${fmt(T)}`],ex:`${MON[s]}–December = ${k} months earned: ${fmt(T)} × ${k}/12 = ${fmt(e)}. Liability ↓, revenue ↑.`}}},
+{ch:5,l:"h",f(){let beg,wo,req,x;do{beg=R(5,30)*100;wo=R(1,25)*100;req=R(8,40)*100;x=req-beg+wo}while(x<=0||x===req);
+ return{q:`Allowance for uncollectible accounts: beginning credit balance ${fmt(beg)}, write-offs during the year ${fmt(wo)}. The aging schedule requires an ending balance of ${fmt(req)}. Bad debt expense is…`,o:num(x,[req,Math.abs(req-beg),req+wo]),ex:`Beginning − write-offs + expense = ending → ${fmt(beg)} − ${fmt(wo)} + X = ${fmt(req)} → X = ${fmt(x)}.`}}},
+{ch:5,l:"h",f(){const u=R(2,25),P=u*1200,r=pick([6,8,9,10,12]),s=pick([6,7,8,9,10]),k=12-s,term=k<6?pick([6,9,12]):pick([9,12]),i=u*r*k;
+ return{q:`On 1 ${MON[s]} a company received a ${fmt(P)}, ${term}-month, ${r}% note. How much interest is accrued on 31 December?`,o:num(i,[P*r/100,u*r*(k+1),P*r/100*k]),ex:`${fmt(P)} × ${r}% × ${k}/12 = ${fmt(i)}: Dr Interest receivable / Cr Interest income.`}}},
+{ch:7,l:"h",f(){const c=R(10,80)*1000,a=R(2,c/1000-2)*1000,bv=c-a;let dd=R(-20,20)*100;if(!dd)dd=500;const cash=bv+dd;
+ const lab=d=>d===0?"No gain or loss":d>0?`Gain of ${fmt(d)}`:`Loss of ${fmt(-d)}`;
+ return{q:`Equipment with cost ${fmt(c)} and accumulated depreciation ${fmt(a)} is sold for ${fmt(cash)} cash. The result is…`,o:uniq([lab(dd),lab(-dd),lab(cash-c),"No gain or loss"],[lab(cash-a)]),ex:`Book value = ${fmt(c)} − ${fmt(a)} = ${fmt(bv)}. Cash ${fmt(cash)} − book value ${fmt(bv)} = ${lab(dd).toLowerCase()}.`}}},
+{ch:3,l:"h",f(){const b=R(10,40)*100;let c=R(2,b/100-2)*100;if(c*2===b)c+=100;const u=b-c;
+ return{q:`The unadjusted Supplies balance is ${fmt(b)}. A count shows ${fmt(c)} still on hand. The adjusting entry is…`,o:[`Dr Supplies expense ${fmt(u)} / Cr Supplies ${fmt(u)}`,`Dr Supplies expense ${fmt(c)} / Cr Supplies ${fmt(c)}`,`Dr Supplies ${fmt(u)} / Cr Supplies expense ${fmt(u)}`,`Dr Supplies expense ${fmt(b)} / Cr Cash ${fmt(b)}`],ex:`Used = ${fmt(b)} − ${fmt(c)} = ${fmt(u)}. Expense ↑, the asset ↓.`}}},
+{ch:3,l:"h",f(){const N=pick([6,12]),m=R(1,15)*100,t=N*m,k=R(2,N-2);
+ return{q:`A company paid ${fmt(t)} in advance for ${N} months of insurance (recorded as Prepaid insurance) and adjusts monthly. What is the Prepaid insurance balance after ${k} months?`,o:num(t-k*m,[k*m,t,t-(k-1)*m]),ex:`Monthly expense = ${fmt(m)}. After ${k} months: ${fmt(t)} − ${k} × ${fmt(m)} = ${fmt(t-k*m)}.`}}},
+/* pro */
+{ch:1,l:"p",f(){const b=R(50,300)*1000,sh=R(0,6)*10000,rev=R(80,250)*1000,exp=R(60,230)*1000,d=R(2,20)*1000,ni=rev-exp,e=b+sh+ni-d;
+ return{q:`Beginning equity ${fmt(b)}. During the year: new shares issued ${fmt(sh)}, revenue ${fmt(rev)}, expenses ${fmt(exp)}, dividends ${fmt(d)}. Ending equity is…`,o:num(e,[b+ni-d,b+sh+ni,b+sh+rev-d]),ex:`${fmt(b)} + ${fmt(sh)} + (${fmt(rev)} − ${fmt(exp)}) − ${fmt(d)} = ${fmt(e)}.`}}},
+{ch:3,l:"p",f(){const dd=R(3,20)*100,days=R(1,4),wd=["Monday","Tuesday","Wednesday","Thursday"][days-1],a=days*dd;
+ return{q:`Salaries are ${fmt(dd)} per working day (Mon–Fri), paid every Friday for that week. 31 December falls on a ${wd}. Accrued salaries at year end are…`,o:num(a,[5*dd,(days+1)*dd,(5-days)*dd]),ex:`Unpaid days: Monday to ${wd} = ${days} × ${fmt(dd)} = ${fmt(a)} → Dr Salary expense / Cr Salaries payable.`}}},
+{ch:3,l:"p",f(){let b,c,e,x;do{b=R(1,20)*1000;c=R(10,40)*1000;e=R(2,25)*1000;x=b+c-e}while(x<=0||x===c);
+ return{q:`Unearned revenue began the year at ${fmt(b)} and ended at ${fmt(e)}. During the year it was credited for ${fmt(c)} received in advance. Revenue earned from it this year is…`,o:num(x,[c,Math.abs(e-b),c+e-b]),ex:`Beginning + received − earned = ending → ${fmt(b)} + ${fmt(c)} − X = ${fmt(e)} → X = ${fmt(x)}.`}}},
+{ch:7,l:"p",f(){const n=pick([4,5,8,10]),r=2/n,unit={4:4000,5:2500,8:16000,10:2500}[n],C=R(2,16)*unit,res=R(0,3)*1000,y1=C*r,y2=(C-y1)*r,v=R(0,2),sl=(C-res)/n;
+ if(v===0)return{q:`An asset costs ${fmt(C)}, residual value ${fmt(res)}, useful life ${n} years. Year 1 double-declining-balance depreciation is…`,o:num(y1,[sl,(C-res)*r,y1/2]),ex:`Rate = 2 × 1/${n} = ${pct(r*100)}. Year 1: ${fmt(C)} × ${pct(r*100)} = ${fmt(y1)}. Residual value is ignored at first.`};
+ if(v===1)return{q:`An asset costs ${fmt(C)}, residual value ${fmt(res)}, useful life ${n} years. Year 2 double-declining-balance depreciation is…`,o:num(y2,[y1,sl,(C-res)*r*(1-r)]),ex:`Rate ${pct(r*100)}. Year 1 = ${fmt(y1)}; book value ${fmt(C-y1)}. Year 2 = ${fmt(C-y1)} × ${pct(r*100)} = ${fmt(y2)}.`};
+ return{q:`An asset costs ${fmt(C)}, residual value ${fmt(res)}, useful life ${n} years, double-declining balance. Book value at the end of year 2 is…`,o:num(C-y1-y2,[C-2*sl,C-y1,C-2*y1]),ex:`Year 1 = ${fmt(y1)}, year 2 = ${fmt(y2)}. ${fmt(C)} − ${fmt(y1)} − ${fmt(y2)} = ${fmt(C-y1-y2)}.`}}},
+{ch:7,l:"p",f(){const n=pick([5,8,10]),mo=R(5,60)*10,C=mo*12*n,k=R(1,n-2),m=R(1,11),months=k*12+m,acc=mo*months,bv=C-acc;let dd=R(-25,25)*100;if(!dd)dd=700;const cash=bv+dd,Y=2022,sy=Y+k;
+ const lab=d=>d===0?"No gain or loss":d>0?`Gain of ${fmt(d)}`:`Loss of ${fmt(-d)}`;
+ return{q:`Equipment bought on 1 January ${Y} for ${fmt(C)} (useful life ${n} years, no residual value, straight-line, books adjusted yearly) is sold on ${MDAYS[m-1]} ${MON[m-1]} ${sy} for ${fmt(cash)} cash. The result of the sale is…`,o:uniq([lab(dd),lab(cash-(C-mo*k*12)),lab(-dd),lab(cash-C)],[lab(dd+mo*12)]),ex:`First update depreciation for ${m} months of ${sy}. Total ${months} months × ${fmt(mo)} = ${fmt(acc)}. Book value ${fmt(bv)}; cash ${fmt(cash)} → ${lab(dd).toLowerCase()}.`}}},
+{ch:7,l:"p",f(){const a=R(2,20)*500,n=pick([5,8,10]),res=R(0,5)*1000,C=a*n+res,k=R(2,n-2),bv=C-a*k,r2=R(2,12);let nr=R(0,3)*1000;if(nr>=bv)nr=0;const na=(bv-nr)/r2;
+ return{q:`An asset cost ${fmt(C)}, residual ${fmt(res)}, ${n}-year straight-line life. After ${k} years the remaining life is revised to ${r2} years and the residual value to ${fmt(nr)}. New annual depreciation is…`,o:num(na,[a,(C-nr)/(k+r2),bv/r2]),ex:`Old annual = ${fmt(a)}. Book value after ${k} years = ${fmt(bv)}. (${fmt(bv)} − ${fmt(nr)}) ÷ ${r2} = ${fmt(na)}.`}}},
+{ch:7,l:"p",f(){const [x,y]=pick([[1,2],[1,3],[2,3],[1,4],[3,5],[2,5]]),u=R(2,20)*100000,v=Math.round(u*R(80,98)/100/1000)*1000,land=x*u,bld=y*u,P=(x+y)*v,bc=y*v;
+ return{q:`Land and a building are bought together for ${fmt(P)}. Market values: land ${fmt(land)}, building ${fmt(bld)}. The cost assigned to the building is…`,o:num(bc,[bld,P-land,P/2]),ex:`Building share = ${fmt(bld)} ÷ ${fmt(land+bld)} = ${y}/${x+y}. ${fmt(P)} × ${y}/${x+y} = ${fmt(bc)}.`}}},
+{ch:6,l:"p",f(){const up=R(0,1),c0=R(8,20),d1=R(2,5),c1=up?c0+d1:c0-d1,c2=up?c1+R(2,5):Math.max(2,c1-R(2,4)),u0=R(5,20),u1=R(10,30),u2=R(10,30),tot=u0+u1+u2,s=R(u0+2,tot-3);
+ const layers=[[u0,c0],[u1,c1],[u2,c2]],tc=u0*c0+u1*c1+u2*c2;
+ const fifo=(()=>{let left=s,cg=0;for(const [u,c] of layers){const t=Math.min(u,left);cg+=t*c;left-=t}return cg})();
+ const lifo=(()=>{let left=s,cg=0;for(const [u,c] of layers.slice().reverse()){const t=Math.min(u,left);cg+=t*c;left-=t}return cg})();
+ const avg=Math.round(s*tc/tot);const ask=R(0,1);
+ const steps=(()=>{let left=s;const out=[];for(const [u,c] of layers){const t=Math.min(u,left);if(t>0)out.push(`${t} × ${fmt(c)}`);left-=t}return out.join(" + ")})();
+ const txt=`Beginning inventory ${u0} units @ ${fmt(c0)}; purchase 1: ${u1} units @ ${fmt(c1)}; purchase 2: ${u2} units @ ${fmt(c2)}. ${s} units are sold.`;
+ if(ask)return{q:`${txt} Using FIFO, cost of goods sold is…`,o:num(fifo,[lifo,avg,tc-fifo]),ex:`FIFO sells the oldest units first: ${steps} = COGS ${fmt(fifo)}. Ending inventory = ${fmt(tc)} − ${fmt(fifo)} = ${fmt(tc-fifo)}.`};
+ return{q:`${txt} Using FIFO, ending inventory is…`,o:num(tc-fifo,[tc-lifo,fifo,tc-avg]),ex:`Goods available ${fmt(tc)}. FIFO COGS = ${steps} = ${fmt(fifo)}. Ending inventory = ${fmt(tc)} − ${fmt(fifo)} = ${fmt(tc-fifo)} (the newest units remain).`}}},
+{ch:6,l:"p",f(){const c0=R(8,15),c1=c0+R(1,4),c2=c1+R(1,4),u0=R(5,20),u1=R(10,30),u2=R(10,30),tot=u0+u1+u2,s=R(u0+2,tot-3),tc=u0*c0+u1*c1+u2*c2,avg=tc/tot,cg=Math.round(s*avg);
+ return{q:`Beginning inventory ${u0} units @ ${fmt(c0)}; purchases ${u1} units @ ${fmt(c1)} and ${u2} units @ ${fmt(c2)}. ${s} units are sold. Using weighted-average cost, COGS (rounded to the nearest euro) is…`,o:num(cg,[s*c0,s*c2,Math.round(s*(c0+c1+c2)/3)]),ex:`Average cost = ${fmt(tc)} ÷ ${tot} units = €${avg.toFixed(4)}. × ${s} units = ${fmt(cg)}.`}}},
+{ch:6,l:"p",f(){const cg=R(50,200)*1000,e=R(5,40)*1000,b=R(5,40)*1000,p=cg+e-b;
+ return{q:`A shop plans cost of goods sold of ${fmt(cg)} next month. It starts with ${fmt(b)} of inventory and wants ${fmt(e)} at the end. How much must it purchase?`,o:num(p,[cg+b-e,cg,cg+e+b]),ex:`Purchases = COGS + ending inventory − beginning inventory = ${fmt(cg)} + ${fmt(e)} − ${fmt(b)} = ${fmt(p)}.`}}},
+{ch:6,l:"p",f(){const n=R(20,200),c=R(20,80),down=Math.random()<0.75,sc=R(2,8),price=down?c+sc-R(2,10):c+sc+R(3,15),nrv=price-sc,w=Math.max(0,(c-nrv)*n);
+ const o=w>0?num(w,[(c-price)*n>0?(c-price)*n:w+n*sc,c*n-price*n+sc*n*2,n*sc]):["No write-down",fmt((price-c)*n),fmt(n*sc),fmt(c*n-nrv*n+n*5)];
+ const fixed=w>0?[o[0],o[1],o[2],"No write-down"]:o;
+ return{q:`${n} units cost ${fmt(c)} each. Estimated selling price is ${fmt(price)} per unit and selling costs are ${fmt(sc)} per unit. The write-down to the lower of cost and NRV is…`,o:uniq(fixed,[fmt(n*c),fmt(n*price)]),ex:w>0?`NRV = ${fmt(price)} − ${fmt(sc)} = ${fmt(nrv)} < cost ${fmt(c)}. Write-down = (${fmt(c)} − ${fmt(nrv)}) × ${n} = ${fmt(w)} → Dr COGS / Cr Inventory.`:`NRV = ${fmt(price)} − ${fmt(sc)} = ${fmt(nrv)}, which is above cost ${fmt(c)}. Keep inventory at cost: no write-down.`}}},
+{ch:5,l:"p",f(){let ba,sales,coll,wo,end,bal,p,req,x;do{ba=R(10,40)*1000;sales=R(60,150)*1000;coll=R(50,150)*1000;wo=R(1,6)*100;end=ba+sales-coll-wo;bal=R(10,40)*100;p=pick([2,3,4,5,8]);req=end*p/100;x=req-(bal-wo)}while(end<=5000||x<=0||req%1);
+ return{q:`Opening receivables ${fmt(ba)}, allowance ${fmt(bal)} (credit). During the year: credit sales ${fmt(sales)}, collections ${fmt(coll)}, write-offs ${fmt(wo)}. ${p}% of ending receivables are expected to be uncollectible. Bad debt expense is…`,o:num(x,[req,Math.abs(req-bal),req+wo]),ex:`Ending receivables = ${fmt(ba)} + ${fmt(sales)} − ${fmt(coll)} − ${fmt(wo)} = ${fmt(end)}. Required allowance ${p}% = ${fmt(req)}. Allowance before adjustment = ${fmt(bal)} − ${fmt(wo)} = ${fmt(bal-wo)}. Expense = ${fmt(x)}.`}}},
+{ch:5,l:"p",f(){const u=R(2,25),P=u*1200,r=pick([6,8,9,10,12]),t=pick([3,6,9]),s=R(13-t,11),k=12-s,i1=u*r*k,i2=u*r*(t-k),v=R(0,1);
+ const ms=MON[s];const due=MON[(s+t)%12];
+ if(v===0)return{q:`On 1 ${ms} a company received a ${fmt(P)}, ${r}%, ${t}-month note, due on 1 ${due}. How much cash is collected at maturity?`,o:num(P+i1+i2,[P,P+i1,P*(1+r/100)]),ex:`Interest = ${fmt(P)} × ${r}% × ${t}/12 = ${fmt(i1+i2)}. Maturity value = ${fmt(P)} + ${fmt(i1+i2)} = ${fmt(P+i1+i2)}.`};
+ return{q:`On 1 ${ms} a company received a ${fmt(P)}, ${r}%, ${t}-month note. Interest was accrued on 31 December. How much interest income is recorded in the NEW year when the note is collected?`,o:num(i2,[i1+i2,i1,P*r/100]),ex:`Total interest ${fmt(i1+i2)}. Already accrued for ${k} month(s) last year: ${fmt(i1)}. New year: ${t-k} month(s) = ${fmt(i2)}.`}}}
+];
+
+/* ---------- messages ---------- */
+const YES=["Ларочка, так держать, солнышко!","Ларочка, ты умничка!","Любимая, ты умничка!","Ларочка, ты выебала!"];
+const NO=["Ларочка, всё выйдет!","Ничего страшного, солнышко, всё получится","Ларочка, ты справишься, я верю","Следующий будет твой, зайка","Ошибки — это тоже учёба, Ларочка","Спокойно, солнышко, ты всё равно лучшая"];
+function endMsg(s){if(s>=18)return"Ларочка, ты гений! Экзамен уже твой";if(s>=14)return"Умничка, солнышко! Ещё чуть-чуть, и будет идеально";if(s>=10)return"Хорошо, Ларочка! Каждый тест делает тебя сильнее";return"Ларочка, всё выйдет! Давай ещё разок, я в тебя верю"}
+let lastMsg="";const say=a=>{let m;do{m=pick(a)}while(m===lastMsg&&a.length>1);lastMsg=m;return m};
+
+const LV={
+ e:{tab:"Простой",title:"Easy",desc:"Definitions, account types and simple calculations from every chapter."},
+ h:{tab:"Сложный",title:"Hard",desc:"Journal entries, adjustments, bad debts, COGS and depreciation with new numbers each time."},
+ p:{tab:"Для профи (выеби)",title:"Pro",desc:"Exam-level problems: DDB, disposals with partial years, FIFO and average cost, allowances, notes and estimate revisions."}
+};
+
+const BL={
+ a:{tab:"Ch. 1–3",chs:[1,2,3]},
+ b:{tab:"Ch. 4",chs:[4]},
+ c:{tab:"Ch. 5",chs:[5]},
+ d:{tab:"Ch. 6–7",chs:[6,7]},
+ x:{tab:"Exam simulation",chs:[1,2,3,4,5,6,7],mix:true}
+};
+
+/* ---------- test builder: questions she has already seen go to the back of the queue ---------- */
+const SID=S.map((s,i)=>({s,id:i}));
+let seen=new Set();try{seen=new Set(JSON.parse(localStorage.getItem("lq-seen")||"[]"))}catch(e){}
+const saveSeen=()=>{try{localStorage.setItem("lq-seen",JSON.stringify([...seen]))}catch(e){}};
+const unseenIn=chs=>SID.filter(x=>chs.includes(x.s[0])&&!seen.has(x.id)).length;
+function queue(chs,lv){
+ const lvls=[lv,...{e:["h","p"],h:["e","p"],p:["h","e"]}[lv]],q={};
+ for(const c of chs){
+  const st_=SID.filter(x=>x.s[0]===c),gen=G.filter(g=>g.ch===c);
+  const fresh=l=>shuffle([...st_.filter(x=>x.s[1]===l&&!seen.has(x.id)),...gen.filter(g=>g.l===l).map(g=>({g}))]);
+  const old=l=>shuffle(st_.filter(x=>x.s[1]===l&&seen.has(x.id)));
+  q[c]=[...lvls.flatMap(fresh),...lvls.flatMap(old),...shuffle(gen.map(g=>({g}))),...shuffle(gen.map(g=>({g})))];
+ }
+ return q;
+}
+function take(chs,lv,n,taken){
+ const q=queue(chs,lv),out=[],order=shuffle(chs);let guard=0;
+ while(out.length<n&&guard<100){for(const c of order){if(out.length>=n)break;while(q[c].length){const it=q[c].shift();if(it.id!==undefined){if(taken.has(it.id))continue;taken.add(it.id)}out.push({c,...it});break}}guard++}
+ return out;
+}
+function build(){
+ const b=BL[st.block],taken=new Set();
+ const picked=b.mix?[...take(b.chs,"e",6,taken),...take(b.chs,"h",8,taken),...take(b.chs,"p",6,taken)]:take(b.chs,st.lv,20,taken);
+ taken.forEach(id=>seen.add(id));
+ if(unseenIn(b.chs)<8)SID.filter(x=>b.chs.includes(x.s[0])&&!taken.has(x.id)).forEach(x=>seen.delete(x.id));
+ saveSeen();
+ return shuffle(picked).map(it=>{
+  let q,o,ex;
+  if(it.s){q=it.s[2];o=it.s[3];ex=it.s[4]}else{const r=it.g.f();q=r.q;o=r.o;ex=r.ex}
+  const order=shuffle([0,1,2,3].slice(0,o.length));
+  return{ch:it.c,q,o:order.map(i=>o[i]),c:order.indexOf(0),ex,pick:null};
+ });
+}
+
+/* ---------- state & render ---------- */
+let st={screen:"home",lv:"e",block:"a",qs:[],i:0};
+try{const s=localStorage.getItem("lq-level");if(s&&LV[s])st.lv=s;const b=localStorage.getItem("lq-block");if(b&&BL[b])st.block=b}catch(e){}
+const label=()=>BL[st.block].mix?"Exam simulation · mixed levels":`${BL[st.block].tab} · ${LV[st.lv].tab}`;
+const app=document.getElementById("app");
+
+function home(){
+ app.innerHTML=`
+ <div class="welcome" style="display:flex;flex-direction:column;gap:14px">
+  <div class="eyebrow">Financial Accounting I · Chapters 1–7</div>
+  <h1>Привет, самая умная <em>девочка в мире</em></h1>
+  <p class="lead">Every test is 20 questions from all seven chapters. The questions are mixed and the numbers change every time, so no two tests are the same.</p>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">1 · Choose chapters</span>
+ <div class="tabs" role="tablist">${Object.entries(BL).map(([k,v])=>`<button class="tab" role="tab" id="blk-${k}" aria-selected="${k===st.block}" data-bl="${k}">${v.tab}</button>`).join("")}</div></div>
+ ${BL[st.block].mix?"":`<div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow">2 · Choose level</span>
+ <div class="tabs" role="tablist">${Object.entries(LV).map(([k,v])=>`<button class="tab" role="tab" id="tab-${k}" aria-selected="${k===st.lv}" data-lv="${k}">${v.tab}</button>`).join("")}</div></div>`}
+ <div class="levelcard">
+  <p>${BL[st.block].mix?"Like the real exam: 20 questions from all seven chapters — 6 easy, 8 hard and 6 pro.":LV[st.lv].desc}</p>
+  <div class="meta"><span>20 questions</span><span>${BL[st.block].chs.length===1?"Chapter "+BL[st.block].chs[0]:"Chapters "+BL[st.block].chs[0]+"–"+BL[st.block].chs.at(-1)}</span><span>${unseenIn(BL[st.block].chs)} questions she hasn't seen yet</span></div>
+  <div class="row"><button class="btn" id="start">Start test</button><span class="hint">Keys 1–4 to answer, Enter for next</span></div>
+ </div>
+ <div class="chapters">${Object.entries(CH).filter(([k])=>BL[st.block].chs.includes(+k)).map(([k,v])=>`<div><span>${k}</span>${v}</div>`).join("")}</div>`;
+ app.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{st.lv=b.dataset.lv;try{localStorage.setItem("lq-level",st.lv)}catch(e){}home()});
+ app.querySelectorAll("[data-bl]").forEach(b=>b.onclick=()=>{st.block=b.dataset.bl;try{localStorage.setItem("lq-block",st.block)}catch(e){}home()});
+ document.getElementById("start").onclick=start;
+}
+function start(){st.qs=build();st.i=0;st.screen="quiz";quiz();window.scrollTo({top:0})}
+
+function ledger(){return`<div class="ledger" aria-hidden="true">${st.qs.map((q,i)=>`<i class="${q.pick===null?(i===st.i?"now":""):(q.pick===q.c?"ok":"no")}"></i>`).join("")}</div>`}
+function quiz(fb){
+ const q=st.qs[st.i],ok=st.qs.filter(x=>x.pick!==null&&x.pick===x.c).length,bad=st.qs.filter(x=>x.pick!==null&&x.pick!==x.c).length,answered=q.pick!==null;
+ app.innerHTML=`
+ <div class="top"><span class="eyebrow">${label()}</span><button class="linkbtn" id="exit">Exit test</button></div>
+ ${ledger()}
+ <div class="qhead"><span>Question ${String(st.i+1).padStart(2,"0")} / 20 · Ch. ${q.ch} ${CH[q.ch]}</span><span>✓ ${ok} · ✗ ${bad}</span></div>
+ <p class="qtext">${esc(q.q)}</p>
+ <div class="opts">${q.o.map((t,i)=>{let cls="opt";if(answered){if(i===q.c)cls+=" right";else if(i===q.pick)cls+=" wrong";else cls+=" dim"}return`<button class="${cls}" id="opt-${i}" data-i="${i}" ${answered?"disabled":""}><span class="k">${"ABCD"[i]}</span><span class="t">${esc(t)}</span></button>`}).join("")}</div>
+ ${answered?`<div class="feedback" aria-live="polite"><p class="cheer">${esc(fb||q.msg||"")}</p><p class="ex"><b>${q.pick===q.c?"Correct.":"Correct answer: "+esc(q.o[q.c])+"."}</b> ${esc(q.ex)}</p><div class="row"><button class="btn" id="next">${st.i<19?"Next question":"See result"}</button></div></div>`:""}`;
+ document.getElementById("exit").onclick=()=>{st.screen="home";home()};
+ app.querySelectorAll(".opt").forEach(b=>b.onclick=e=>answer(+b.dataset.i,b));
+ const nx=document.getElementById("next");if(nx){nx.onclick=next;nx.focus({preventScroll:true})}
+}
+function answer(i,el){
+ const q=st.qs[st.i];if(q.pick!==null)return;q.pick=i;
+ const right=i===q.c;q.msg=right?say(YES):say(NO);
+ let rect=el.getBoundingClientRect();
+ quiz(q.msg);
+ if(right){const b=document.getElementById("opt-"+i);if(b)rect=b.getBoundingClientRect();burst(rect.left+rect.width/2,rect.top+rect.height/2)}
+}
+function next(){if(st.i<19){st.i++;quiz();const t=document.querySelector(".qtext");if(t)t.scrollIntoView({block:"nearest"})}else{st.screen="done";done()}}
+function done(){
+ const s=st.qs.filter(q=>q.pick===q.c).length,wrong=st.qs.filter(q=>q.pick!==q.c);
+ app.innerHTML=`
+ <div class="eyebrow">${label()} · result</div>
+ ${ledger()}
+ <div style="display:flex;flex-direction:column;gap:10px"><div class="score">${s} / 20</div><p class="cheer">${endMsg(s)}</p></div>
+ <div class="row"><button class="btn" id="again">Same test, new questions</button><button class="btn ghost" id="lvl">Other chapters or level</button></div>
+ ${wrong.length?`<div class="eyebrow">Review your mistakes</div><div class="review">${wrong.map(q=>`<div class="rv"><span class="rq">${esc(q.q)}</span><span class="ry">${esc(q.o[q.pick])}</span><span class="rc"><b>${esc(q.o[q.c])}</b></span><span class="rx">${esc(q.ex)}</span></div>`).join("")}</div>`:`<p class="lead">No mistakes at all. Perfect ledger.</p>`}`;
+ document.getElementById("again").onclick=start;
+ document.getElementById("lvl").onclick=()=>{st.screen="home";home()};
+ if(s>=14){setTimeout(()=>{const el=document.querySelector(".score");if(el){const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,80)}},150)}
+ window.scrollTo({top:0});
+}
+
+document.addEventListener("keydown",e=>{
+ if(st.screen!=="quiz")return;const q=st.qs[st.i];
+ const k=e.key.toLowerCase(),map={"1":0,"2":1,"3":2,"4":3,a:0,b:1,c:2,d:3};
+ if(q.pick===null&&k in map&&map[k]<q.o.length){const el=document.getElementById("opt-"+map[k]);if(el)answer(map[k],el)}
+ else if(q.pick!==null&&e.key==="Enter"&&document.activeElement?.id!=="next"){e.preventDefault();next()}
+});
+
+/* ---------- hearts with gravity ---------- */
+const cv=document.getElementById("fx"),cx=cv.getContext("2d");let parts=[],raf=0;
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const HC=["#e11d48","#f43f5e","#be123c","#fb7185","#ff4d6d"];
+function size(){const d=window.devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cx.setTransform(d,0,0,d,0,0)}
+size();addEventListener("resize",size);
+function burst(x,y,n){n=n||(reduce?8:48);for(let k=0;k<n;k++){const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.1,sp=reduce?0:5+Math.random()*11;
+ parts.push({x:x+(reduce?(Math.random()-.5)*160:0),y:y+(reduce?(Math.random()-.5)*60:0),vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,g:reduce?0:.38,r:(Math.random()-.5)*.8,vr:(Math.random()-.5)*.25,s:10+Math.random()*18,life:0,max:(reduce?60:90)+Math.random()*70,c:pick(HC)})}
+ if(!raf)raf=requestAnimationFrame(tick)}
+function heart(s){cx.beginPath();cx.moveTo(0,-s*.2);cx.bezierCurveTo(0,-s*.5,-s*.5,-s*.5,-s*.5,-s*.2);cx.bezierCurveTo(-s*.5,s*.1,0,s*.3,0,s*.5);cx.bezierCurveTo(0,s*.3,s*.5,s*.1,s*.5,-s*.2);cx.bezierCurveTo(s*.5,-s*.5,0,-s*.5,0,-s*.2);cx.closePath();cx.fill()}
+function tick(){cx.clearRect(0,0,cv.width,cv.height);
+ parts=parts.filter(p=>p.life<p.max&&p.y<innerHeight+60);
+ for(const p of parts){p.vy+=p.g;p.vx*=.985;p.vy*=.995;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life++;
+  const fade=Math.min(1,Math.max(0,1-(p.life-p.max*.55)/(p.max*.45)));cx.save();cx.globalAlpha=fade;cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;heart(p.s);cx.restore()}
+ raf=parts.length?requestAnimationFrame(tick):0;if(!raf)cx.clearRect(0,0,cv.width,cv.height)}
+
+/* ---------- boot (keeps progress across page updates) ---------- */
+function boot(data){
+ if(data&&data.st&&data.st.qs){st=data.st}
+ if(st.screen==="quiz"&&st.qs.length){const q=st.qs[st.i];quiz(q.pick!==null?q.msg:undefined)}
+ else if(st.screen==="done"&&st.qs.length)done();else home();
+}
+window.claude?.hot?.snapshot?.(()=>({st}));
+window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
+</script>
+
+</body></html>
